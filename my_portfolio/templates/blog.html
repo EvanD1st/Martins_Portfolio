@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <div id="live-status" style="font-family: monospace; color: #10b981; margin-bottom: 10px;">
+  <span id="greeting"></span> · <span id="clock"></span> </div>
+  <meta charset="UTF-8">
+  <title>Blog · martins@dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #0a0f1c;
+      color: #cbd5e1;
+      font-family: 'Courier New', monospace;
+      line-height: 1.6;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 60px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .logo span { color: #10b981; }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .nav-links a:hover { color: #3b82f6; }
+    .nav-links a.active { color: #10b981; }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .page-title {
+      font-size: 0.95rem;
+      color: #10b981;
+      margin-bottom: 8px;
+    }
+    .page-title::before { content: "$ "; color: #64748b; }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #f1f5f9;
+      margin-bottom: 40px;
+    }
+    h1 span { color: #3b82f6; }
+
+    .post-card {
+      background-color: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 28px;
+      margin-bottom: 24px;
+      transition: border-color 0.2s ease;
+    }
+    .post-card:hover { border-color: #3b82f6; }
+
+    .post-meta {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+    .post-meta .tag {
+      color: #10b981;
+      background: #0f2419;
+      padding: 2px 10px;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+
+    .post-title {
+      font-size: 1.4rem;
+      color: #f1f5f9;
+      margin-bottom: 10px;
+    }
+
+    .post-excerpt {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+    }
+
+    .read-more {
+      color: #3b82f6;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .read-more:hover { text-decoration: underline; }
+    .read-more::after { content: " →"; }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #475569;
+      font-size: 0.85rem;
+      border-top: 1px solid #1e293b;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">martins<span>@dev</span></div>
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'about' %}">About</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'skills' %}">Skills</a></li>
+      <li><a href="{% url 'blog' %}" class="active">Blog</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <div class="page-title">cat blog/posts.log</div>
+    <h1>Notes from the <span>terminal</span></h1>
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="tag">Django</span> July 10, 2026
+      </div>
+      <div class="post-title">Fixing the "Page Not Found" URL trap in Django</div>
+      <div class="post-excerpt">
+        A common mistake when linking pages in templates — and why {% templatetag openblock %} url {% templatetag closeblock %} beats hardcoded href paths every time.
+      </div>
+      <a href="#" class="read-more">Read more</a>
+    </div>
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="tag">Python</span> June 28, 2026
+      </div>
+      <div class="post-title">Building a Smart Transport Booking System with OOP</div>
+      <div class="post-excerpt">
+        How I used custom exceptions, decorators, and context managers to model a real-world booking flow between Aba, Umuahia, and Owerri.
+      </div>
+      <a href="#" class="read-more">Read more</a>
+    </div>
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="tag">Career</span> June 15, 2026
+      </div>
+      <div class="post-title">Why I'm positioning myself as an Enterprise Python Developer</div>
+      <div class="post-excerpt">
+        Thoughts on backend engineering, full-stack range, and what "enterprise-ready" actually means for a growing developer.
+      </div>
+      <a href="#" class="read-more">Read more</a>
+    </div>
+  </div>
+  <script>
+  function updateGreetingAndClock() {
+    const now = new Date();
+    const hour = now.getHours();
+
+    let greeting;
+    if (hour < 12) greeting = "Good morning";
+    else if (hour < 17) greeting = "Good afternoon";
+    else if (hour < 21) greeting = "Good evening";
+    else greeting = "Good night";
+
+    document.getElementById("greeting").textContent = greeting;
+
+    const timeString = now.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+    document.getElementById("clock").textContent = timeString;
+  }
+
+  updateGreetingAndClock();
+  setInterval(updateGreetingAndClock, 1000);
+</script>
+
+  <footer>
+    &copy; 2026 Martins — Built with Django & a lot of debugging
+  </footer>
+
+</body>
+</html>
