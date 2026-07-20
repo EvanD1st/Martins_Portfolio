@@ -1,0 +1,242 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Martins — Enterprise Python Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0B1B33; --surface:#122544; --surface2:#16305A;
+      --accent:#3B82F6; --accent-soft:#3B82F633;
+      --text:#E8EEF7; --muted:#8CA0C4; --green:#34D399;
+      --mono:'JetBrains Mono',monospace; --body:'Inter',sans-serif;
+      --radius:10px; --maxw:1100px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;}
+    a{color:inherit;text-decoration:none;}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+
+    header{position:sticky;top:0;background:rgba(11,27,51,0.9);backdrop-filter:blur(8px);
+      border-bottom:1px solid #ffffff12;z-index:10;}
+    nav.wrap{display:flex;justify-content:space-between;align-items:center;height:72px;}
+    .brand{font-family:var(--mono);font-weight:700;font-size:1.05rem;color:var(--green);}
+    .brand span{color:var(--muted);}
+    .nav-links{display:flex;gap:28px;font-family:var(--mono);font-size:.9rem;}
+    .nav-links a{color:var(--muted);transition:color .2s;}
+    .nav-links a:hover, .nav-links a.active{color:var(--accent);}
+
+    .status-bar{font-family:var(--mono);color:var(--green);font-size:.85rem;margin-bottom:18px;
+      display:flex;align-items:center;gap:8px;}
+    .status-bar::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%;
+      display:inline-block;box-shadow:0 0 0 3px #34D39933;}
+
+    .hero{padding:60px 0 70px;display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;}
+    .eyebrow{font-family:var(--mono);color:var(--green);font-size:.85rem;margin-bottom:14px;}
+    .eyebrow::before{content:"$ ";color:var(--muted);}
+    h1{font-family:var(--mono);font-size:2.6rem;font-weight:800;line-height:1.15;margin-bottom:16px;}
+    h1 .accent{color:var(--accent);}
+    .lede{color:var(--muted);font-size:1.05rem;max-width:46ch;margin-bottom:30px;}
+    .cta-row{display:flex;gap:14px;}
+    .btn{font-family:var(--mono);font-weight:600;padding:13px 22px;border-radius:var(--radius);font-size:.9rem;
+      transition:transform .15s, background .15s;display:inline-block;}
+    .btn-primary{background:var(--accent);color:#fff;}
+    .btn-primary:hover{background:#2563EB;transform:translateY(-2px);}
+    .btn-ghost{border:1px solid #ffffff2a;color:var(--text);}
+    .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+
+    .terminal{background:var(--surface);border:1px solid #ffffff14;border-radius:var(--radius);
+      box-shadow:0 20px 50px -20px #00000080;overflow:hidden;position:relative;}
+    .term-bar{background:var(--surface2);padding:10px 14px;display:flex;gap:7px;}
+    .dot{width:11px;height:11px;border-radius:50%;}
+    .dot.r{background:#FF5F56;} .dot.y{background:#FFBD2E;} .dot.g{background:#27C93F;}
+    .term-body{padding:22px;font-family:var(--mono);font-size:.88rem;color:var(--green);min-height:180px;}
+    .term-body .muted{color:var(--muted);}
+    .term-body .line{margin-bottom:10px;}
+    .cursor{display:inline-block;width:8px;height:16px;background:var(--green);margin-left:2px;
+      animation:blink 1s step-end infinite;vertical-align:middle;}
+    @keyframes blink{50%{opacity:0;}}
+
+    /* floating profile badge */
+    .floating{
+      animation: bob 3s ease-in-out infinite;
+      border-radius:50%;
+      border:2px solid var(--accent);
+      box-shadow:0 10px 30px -10px #000000a0;
+    }
+    @keyframes bob{
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-14px); }
+    }
+
+    .strip{border-top:1px solid #ffffff12;border-bottom:1px solid #ffffff12;padding:26px 0;}
+    .strip .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;
+      font-family:var(--mono);color:var(--muted);font-size:.85rem;}
+
+    section{padding:80px 0;}
+    .section-label{font-family:var(--mono);color:var(--green);font-size:.85rem;margin-bottom:8px;}
+    .section-label::before{content:"$ ";color:var(--muted);}
+    h2{font-family:var(--mono);font-size:1.8rem;margin-bottom:36px;}
+
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+    .card{background:var(--surface);border:1px solid #ffffff14;border-radius:var(--radius);padding:24px;
+      transition:transform .2s, border-color .2s;}
+    .card:hover{transform:translateY(-4px);border-color:var(--accent);}
+    .card .tag{font-family:var(--mono);color:var(--accent);font-size:.75rem;margin-bottom:10px;}
+    .card h3{font-family:var(--mono);font-size:1.05rem;margin-bottom:10px;}
+    .card p{color:var(--muted);font-size:.92rem;margin-bottom:14px;}
+    .card a{font-family:var(--mono);font-size:.82rem;color:var(--green);}
+
+    footer{padding:40px 0;border-top:1px solid #ffffff12;text-align:center;color:var(--muted);
+      font-family:var(--mono);font-size:.82rem;}
+
+    @media(max-width:800px){
+      .hero{grid-template-columns:1fr;padding:50px 0;}
+      .grid3{grid-template-columns:1fr;}
+      .nav-links{display:none;}
+      h1{font-size:2rem;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="{% url 'home' %}" class="brand">martins<span>@dev</span></a>
+    <div class="nav-links">
+      <a href="{% url 'home' %}" class="active">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'contact' %}">Contact</a>
+      <a href="{% url 'skills' %}">Skills</a>
+      <a href="{% url 'blog' %}">Blog</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero wrap">
+  <div>
+    <div class="status-bar">
+      <span id="greeting"></span> · <span id="clock"></span>
+    </div>
+
+    <div class="eyebrow">whoami</div>
+    <h1>Martins —<br><span class="accent">Enterprise Python</span><br>Developer</h1>
+    <p class="lede">I build scalable backend systems with Django, from clean REST APIs to full production deployments. Based in Aba, Nigeria — working with teams anywhere.</p>
+    <div class="cta-row">
+      <a href="{% url 'blog' %}" class="btn btn-primary">View My Work</a>
+      <a href="{% url 'contact' %}" class="btn btn-ghost">Get In Touch</a>
+    </div>
+  </div>
+
+  <div class="terminal">
+    <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+    <div class="term-body">
+      <div class="line"><span class="muted">$</span> whoami</div>
+      <div class="line">martins — backend engineer</div>
+      <div class="line"><span class="muted">$</span> stack --list</div>
+      <div class="line">Python, Django, PostgreSQL, React</div>
+      <div class="line"><span class="muted">$</span> status</div>
+      <div class="line">open to work<span class="cursor"></span></div>
+    </div>
+
+    <img id="drag-img"
+         src="{% static 'image/profilepic.jpeg' %}" alt="Martins"
+         class="floating"
+         style="width:120px; height:120px; object-fit:cover; position:absolute; top:-40px; right:24px; cursor:grab; z-index:10;"
+  </div>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <span>Python</span><span>Django</span><span>PostgreSQL</span><span>REST APIs</span>
+    <span>Docker</span><span>Git</span><span>React</span>
+  </div>
+</div>
+
+<section class="wrap">
+  <div class="section-label">featured_work</div>
+  <h2>Recent projects</h2>
+  <div class="grid3">
+    <div class="card">
+      <div class="tag">DJANGO · PYTHON</div>
+      <h3>Smart Transport Booking System</h3>
+      <p>Full booking engine with a custom class hierarchy, retry/timer decorators, a context manager, generators, and pandas-powered analytics on route data.</p>
+      <a href="{% url 'blog' %}">Read case study →</a>
+    </div>
+    <div class="card">
+      <div class="tag">DJANGO · CRUD</div>
+      <h3>Django Todo Application</h3>
+      <p>Task manager built with Django's template inheritance, named URLs, and form handling — including CSRF-safe submissions.</p>
+      <a href="{% url 'blog' %}">Read case study →</a>
+    </div>
+    <div class="card">
+      <div class="tag">PYTHON · CLI</div>
+      <h3>CSV Data Analyzer</h3>
+      <p>Command-line tool that parses arguments, detects numeric fields, generates statistics, and exports clean JSON reports.</p>
+      <a href="{% url 'blog' %}">Read case study →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Martins · Aba, Nigeria · <a href="{% url 'contact' %}">Say hello</a>
+</footer>
+
+<script>
+  function updateGreetingAndClock() {
+    const now = new Date();
+    const hour = now.getHours();
+
+    let greeting;
+    if (hour < 12) greeting = "Good morning";
+    else if (hour < 17) greeting = "Good afternoon";
+    else if (hour < 21) greeting = "Good evening";
+    else greeting = "Good night";
+
+    document.getElementById("greeting").textContent = greeting;
+
+    const timeString = now.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+    document.getElementById("clock").textContent = timeString;
+  }
+
+  updateGreetingAndClock();
+  setInterval(updateGreetingAndClock, 1000);
+
+  // draggable profile badge — pauses the floating animation while dragging
+  const dragImg = document.getElementById("drag-img");
+  let isDragging = false, offsetX, offsetY;
+
+  dragImg.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    dragImg.classList.remove("floating");
+    offsetX = e.clientX - dragImg.getBoundingClientRect().left;
+    offsetY = e.clientY - dragImg.getBoundingClientRect().top;
+    dragImg.style.cursor = "grabbing";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    dragImg.style.left = `${e.clientX - offsetX}px`;
+    dragImg.style.top = `${e.clientY - offsetY}px`;
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isDragging) {
+      isDragging = false;
+      dragImg.style.cursor = "grab";
+      setTimeout(() => dragImg.classList.add("floating"), 500);
+    }
+  });
+</script>
+
+</body>
+</html>
